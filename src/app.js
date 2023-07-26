@@ -29,18 +29,21 @@ app.set('views', path.join(__dirname,"./views"));
 
 const socketServer = new Server(httpServer)
 
+let productos=[];
+
 socketServer.on("connection",(socketConnected)=>{
     console.log(`Bienvenido ${socketConnected.id}`)
 
-    socketConnected.on("nuevoProducto",(data)=>{
-        console.log(`Se ha creado un nuevo producto: ${data}`);
-    });
 
+    socketConnected.on("creacionTitulo",(data)=>{
+        console.log(data);
+        productos.push({producto:data});
 
+        socketServer.emit("historialProductos",productos);
+        
+    })
 
-
-
-})
+});
 
 
 app.use(viewsRouter);
