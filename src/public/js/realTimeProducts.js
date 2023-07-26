@@ -7,12 +7,12 @@ const sendButton=document.getElementById("sendButton");
 sendButton.addEventListener("click",()=>{
     socketClient.emit("creacionTitulo",tituloProducto.value);
     tituloProducto.value="";
-    socketClient.emit("creacionDescripcion",descripcionProducto.value);
-    descripcionProducto.value="";
+/*     socketClient.emit("creacionDescripcion",descripcionProducto.value);
+    descripcionProducto.value=""; */
 })
 
 
 
-socketClient.on("historialProductos",(data)=>{
-    console.log(data)
+socketClient.on("historialProductos",(products)=>{
+    console.log(products)
 })

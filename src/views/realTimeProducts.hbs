@@ -5,6 +5,9 @@
 
 <button id="sendButton">Enviar</button>
 
+{{#each products}}
+    <p>Producto:{{this.producto}}</p>
+{{/each}}
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>
