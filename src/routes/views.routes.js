@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/",async(req,res)=>{
     const products = await productService.get();
-    res.render("home")
+    res.render("home",{products})
     
 
 });

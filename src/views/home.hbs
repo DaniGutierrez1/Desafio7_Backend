@@ -1,7 +1,15 @@
 <h1>Productos disponibles</h1>
 <div>
-    <li>
-        {{products}}
-    </li>
+    {{#each products}}
+        <li>
+            Titulo:{{this.title}},
+                <ul>
+                    Descripcion:{{this.description}},
+                    Precio:{{this.price}},
+                    Stock:{{this.stock}}
+                    Categoria:{{this.category}}
+                </ul>
+        </li>
+    {{/each}}
 </div>
 <script src="/js/home.js"></script>
