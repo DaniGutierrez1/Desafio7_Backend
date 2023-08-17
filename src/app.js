@@ -1,4 +1,7 @@
 import express from "express";
+import { config } from "./config/config.js";
+import { connectDB } from "./config/dbConnection.js";
+
 import {engine} from "express-handlebars";
 import { __dirname } from "./utils.js";
 import path from "path";
@@ -7,9 +10,9 @@ import { Server} from "socket.io"
 import { viewsRouter } from "./routes/views.routes.js";
 
 import { productsRouter } from "./routes/products.routes.js";
-import { cartsRouter } from "./routes/cart.routes.js";
+// import { cartsRouter } from "./routes/cart.routes.js";
 
-const port = 8080;
+const port = config.server.port;
 const app = express()
 
 app.use(express.json());
@@ -17,10 +20,12 @@ app.use(express.urlencoded({extended:true}));
 
 const httpServer=app.listen(port,()=> console.log(`server escuchando en puerto ${port}`));
 
+connectDB();
+
 app.use(express.static(path.join(__dirname,"/public")))
 
 app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
+//app.use("/api/carts", cartsRouter);
 
 //Handlebars
 app.engine('.hbs', engine({extname: '.hbs'}));
@@ -47,3 +52,4 @@ socketServer.on("connection",(socketConnected)=>{
 
 
 app.use(viewsRouter);
+

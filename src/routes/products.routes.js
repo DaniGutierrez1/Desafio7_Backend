@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/productManager.js";
+//import { ProductManager } from "../dao/managers/fileSystem/productsFiles.js";
 
-const productService = new ProductManager('products.json')
+// const productService = new ProductManager('products.json')
+
+import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
+
+const productService=new ProductsMongo()
 
 const validateFields = (req,res,next)=>{
     const productInfo = req.body
-    if(!productInfo.title || !productInfo.description || !productInfo.code || !productInfo.price || !productInfo.stock ||       !productInfo.category){
+    if(!productInfo.title ||  !productInfo.code || !productInfo.price || !productInfo.stock || !productInfo.category){
         return res.json({status:"error",message:"campos incompletos"})
      }else{
         next();
