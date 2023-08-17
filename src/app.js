@@ -22,6 +22,7 @@ const httpServer=app.listen(port,()=> console.log(`server escuchando en puerto $
 
 connectDB();
 
+
 app.use(express.static(path.join(__dirname,"/public")))
 
 app.use("/api/products", productsRouter);
