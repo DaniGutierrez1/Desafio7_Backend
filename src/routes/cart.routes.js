@@ -14,8 +14,24 @@ router.post("/",async(req,res)=>{
     } catch (error) {
         res.json({status:"error", message:error.message});
     }
-})
-router.get("/:cid",(req,res)=>{})
+});
+
+router.get("/:cid",async(req,res)=>{ 
+    try {
+        const cartID = req.params.cid;
+        const cart = await cartService.getByID(cartID)
+        if(cartID){
+            res.json({status:"succes",data:cart, message:"El carrito ha sido encontrado"})
+        }else{
+            
+            res.json({status:"error", message:"El carrito no existe"})
+        }
+        
+    } catch (error) {
+        res.json({status:"error", message:error.message});
+    }
+});
+
 router.post("/:cid/product/:pid",async(req,res)=>{
     try {
         const cartID = req.params.cid;
