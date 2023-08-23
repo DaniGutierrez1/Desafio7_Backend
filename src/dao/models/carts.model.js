@@ -20,3 +20,5 @@ const cartsSchema = new mongoose.Schema({
     },
     default:[]
 })
+
+export const cartsModel = mongoose.model(cartsCollection,cartsSchema)

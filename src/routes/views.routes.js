@@ -19,8 +19,48 @@ router.get("/realtimeproducts",(req,res)=>{
 });
 
 router.get("/products",async (req,res)=>{
-    const products = await productServiceDB.get();
-    res.render("products",{products})
+    try {
+        const {limit=5,page=1,stock,sort="asc"} = req.query
+        const stockValue = stock === 0 ? undefined : parseInt(stock);
+        if(!["asc","desc"].includes(sort)){
+            return res.render("products", {error:"Orden no valido"})
+        }
+    
+        const sortValue = sort === "asc" ? 1: -1 ;
+        let query ={};
+        if(stockValue){
+            query={stock:{$gte:stockValue}}
+        }
+    
+        const products = await productServiceDB.getPaginate(query,{
+            page,
+            limit,
+            sort:{price:sortValue},
+            lean:true,
+        });
+        console.log(products)
+        const baseUrl=`${req.protocol}://${req.get("host")}${req.originalUrl}`
+        
+        const resultProductsView = {
+            status : "succes",
+            payload: products.docs,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage,
+            netPage:products.nextPage,
+            page:  products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: products.hasPrevPage?`${baseUrl.replace(`page=${products.page}`,`page=${products.prevPage}`)}`:null,
+            nextLink:products.hasNextPage?`${baseUrl.replace(`page=${products.page}`,`page=${products.nextPage}`)}`:null,
+            
+            
+        }
+        
+        res.render("products",resultProductsView)
+        console.log(resultProductsView)
+    } catch (error) {
+        throw error
+    }
 
 });
 

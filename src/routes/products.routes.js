@@ -39,7 +39,7 @@ router.get("/",async(req,res)=>{
 router.get("/:pid",async (req,res)=>{
     try {
         const id = req.body;
-        const productSearch = await productService.getByID(id);
+        const productSearch = await productService.getById(id);
         if(id){
             
             res.json({status:"succes",data:productSearch, message:"El producto ha sido encontrado"})
@@ -52,14 +52,19 @@ router.get("/:pid",async (req,res)=>{
     }
 });
 
+/*
 router.get("/api/products",async(req,res)=>{
     try {
-        const products = await this.model.paginate({},{limit:5, page:1})
-        console.log(products)
+        const productsPaginate = await productService.paginate({},{limit:5, page:1})
+        res.json({status:"succes",data:productsPaginate});
     } catch (error) {
         res.json({status:"error",message:error.message})
     }
 })
+*/
+// router.get("/api/products",async (req,res)=>{
+
+// })
 
 
 // No supe como hacer la populacion y la paginacion juntas asi que las separe. La idea era hacer un boton para hacer la populacion

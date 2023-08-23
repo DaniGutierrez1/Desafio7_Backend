@@ -7,9 +7,10 @@ export class ProductsMongo{
         this.model=productsModel;
     };
 
+    
     async get(){
         try {
-            const products = await this.model.find();
+            const products = await this.model.find().lean();
             return products;
         } catch (error) {
             console.log(error.message);
@@ -17,6 +18,15 @@ export class ProductsMongo{
             throw new error("No se encuentran los productos")
         }
     };
+
+    async getPaginate(query,options){
+        try {
+            const productsPaginate = await this.model.paginate(query,options);
+            return productsPaginate
+        } catch (error) {
+            throw error
+        }
+    }
 
     async getById(id){
         try {
