@@ -30,7 +30,7 @@ export class ProductsMongo{
 
     async getById(id){
         try {
-            const product = await this.model.findById(id);
+            const product = await this.model.findById(id).lean();
             return product;
         } catch (error) {
             throw new error("No se encontró el ID del producto ");
