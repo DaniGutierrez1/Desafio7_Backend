@@ -2,6 +2,8 @@ import { Router } from "express";
 import { ProductManager } from "../dao/managers/fileSystem/productsFiles.js";
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 
+import { usersMongo } from "../dao/managers/mongo/userMongo.js";
+const userService=new usersMongo()
 const productService = new ProductManager('products.json')
 const productServiceDB = new ProductsMongo('products.json')
 
@@ -18,6 +20,20 @@ router.get("/realtimeproducts",(req,res)=>{
     res.render("realTimeProducts")
 });
 
+router.get("/registro",(req,res)=>{
+    res.render("signup");
+})
+
+router.get("/login",(req,res)=>{
+    res.render("login");
+})
+
+router.get("/perfil",async(req,res)=>{
+    /*
+    const user = await userService.getByEmail(user.email,{lean:true})
+    */
+    res.render("profile")
+})
 
 router.get("/products",async (req,res)=>{
     try {

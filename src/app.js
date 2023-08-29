@@ -12,6 +12,7 @@ import { Server} from "socket.io"
 
 import { viewsRouter } from "./routes/views.routes.js";
 
+import { sessionsRouter } from "./routes/sessions.routes.js";
 import { productsRouter } from "./routes/products.routes.js";
 // import { cartsRouter } from "./routes/cart.routes.js";
 
@@ -27,16 +28,17 @@ app.use(session({
     secret:config.server.secretSession,
     resave:true,
     saveUninitialized:true
-}));
+})); 
 
 const httpServer=app.listen(port,()=> console.log(`server escuchando en puerto ${port}`));
 
-connectDB();
+
 
 
 app.use(express.static(path.join(__dirname,"/public")))
 
 app.use("/api/products", productsRouter);
+app.use("/api/sessions", sessionsRouter);
 //app.use("/api/carts", cartsRouter);
 
 //Handlebars
