@@ -2,6 +2,9 @@ import express from "express";
 import { config } from "./config/config.js";
 import { connectDB } from "./config/dbConnection.js";
 
+import session from "express-session";
+import MongoStore from "connect-mongo";
+
 import {engine} from "express-handlebars";
 import { __dirname } from "./utils.js";
 import path from "path";
@@ -17,6 +20,14 @@ const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl:config.mongo.url
+    }),
+    secret:config.server.secretSession,
+    resave:true,
+    saveUninitialized:true
+}));
 
 const httpServer=app.listen(port,()=> console.log(`server escuchando en puerto ${port}`));
 

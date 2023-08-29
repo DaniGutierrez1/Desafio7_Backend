@@ -18,6 +18,7 @@ router.get("/realtimeproducts",(req,res)=>{
     res.render("realTimeProducts")
 });
 
+
 router.get("/products",async (req,res)=>{
     try {
         const {limit=5,page=1,stock,sort="asc"} = req.query
