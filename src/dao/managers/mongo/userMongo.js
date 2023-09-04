@@ -9,6 +9,13 @@ export class usersMongo{
         try {
             const userCreated = await this.model.create(user);
             return userCreated
+            
+            if(userCreated.email == "@coder.com"){
+                userCreated.role = "admin";
+            }else{
+                userCreated.role= "user";
+            }
+
         } catch (error) {
             throw error;
         }

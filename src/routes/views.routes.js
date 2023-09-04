@@ -3,6 +3,9 @@ import { ProductManager } from "../dao/managers/fileSystem/productsFiles.js";
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 
 import { usersMongo } from "../dao/managers/mongo/userMongo.js";
+import { checkUserAuthenticated, showLoginView } from "../middlewares/auth.js";
+
+
 const userService=new usersMongo()
 const productService = new ProductManager('products.json')
 const productServiceDB = new ProductsMongo('products.json')
@@ -20,19 +23,19 @@ router.get("/realtimeproducts",(req,res)=>{
     res.render("realTimeProducts")
 });
 
-router.get("/registro",(req,res)=>{
+router.get("/registro",showLoginView,(req,res)=>{
     res.render("signup");
 })
 
-router.get("/login",(req,res)=>{
+router.get("/login",showLoginView,(req,res)=>{
     res.render("login");
 })
 
-router.get("/perfil",async(req,res)=>{
+router.get("/perfil",checkUserAuthenticated,(req,res)=>{
     /*
     const user = await userService.getByEmail(user.email,{lean:true})
     */
-    res.render("profile")
+    res.render("profile",{user:req.session.userInfo})
 })
 
 router.get("/products",async (req,res)=>{

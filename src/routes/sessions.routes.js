@@ -8,11 +8,12 @@ router.post("/signup",async(req,res)=>{
     try {
         const signupForm=req.body;
         const user = await userService.getByEmail(signupForm.email);
-         
+        
         if(user){
-            res.render("signup",{error:"Este usuario ya existe"});
+            return res.render("signup",{error:"Este usuario ya existe"});
         }
 
+        
         const result = await userService.save(signupForm);
         res.render("login",{message:`usuario ${result.first_name}registrado`});
        
@@ -28,14 +29,14 @@ router.post("/login",async(req,res)=>{
         const user = await userService.getByEmail(loginForm.email);
          
         if(!user){
-            res.render("login",{error:"Este usuario no existe"});
+            return res.render("login",{error:"Este usuario no existe"});
         };
         if(user.password === loginForm.password){
             req.session.userInfo= {
                 first_name:user.first_name,
                 email:user.email
             };
-            //res.redirect("/perfil",{message:`Bienvenido ${user.first_name}`});
+            
             res.redirect("/perfil",{message:"Bienvenido"});
         }else{
             return res.render("login",{error:"Credenciales invalidas"})
@@ -49,8 +50,11 @@ router.post("/login",async(req,res)=>{
     }
 });
 
-router.post("/logout",(req,res)=>{
-    res.send("Cerrar usuario")
+router.get("/logout",(req,res)=>{
+    req.session.destroy(error=>{
+        if(error)return res.render("profile",{user: req.session.userInfo, error: "No se pudo cerrar la sesión"})
+        res.redirect("/login");
+    })
 });
 
 export { router as sessionsRouter}
