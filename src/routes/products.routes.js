@@ -1,11 +1,9 @@
 import { Router } from "express";
-//import { ProductManager } from "../dao/managers/fileSystem/productsFiles.js";
-
-// const productService = new ProductManager('products.json')
+import { ProductsController } from "../controllers/products.controller.js";
 
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 
-const productService=new ProductsMongo()
+export const productsDao=new ProductsMongo()
 
 const validateFields = (req,res,next)=>{
     const productInfo = req.body
@@ -20,70 +18,17 @@ const validateFields = (req,res,next)=>{
 
 const router = Router();
 
-router.get("/",async(req,res)=>{
-    try {
-        const limit = req.query.limit;
-        const products = await productService.get();
-        if(limit){
-            
-            res.json({status:"succes",data:products.lenght==limit})
-        }else{
-            
-            res.json({status:"succes", data:products})
-        }
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-});
+router.get("/",ProductsController.getProducts);
 
 
-router.get("/:pid",async (req,res)=>{
-    try {
-        const id = req.body;
-        const productSearch = await productService.getById(id);
-        if(id){
-            
-            res.json({status:"succes",data:productSearch, message:"El producto ha sido encontrado"})
-        }else{
-            
-            res.json({status:"error", message:"El id no existe"})
-        }
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-});
+router.get("/:pid",ProductsController.getProduct);
 
 
-router.post("/",validateFields,async(req,res)=>{
-    
-    try {
-        const productInfo=req.body;
-        const productCreated = await productService.save(productInfo);
-        res.json({status:"succes", data:productCreated, message:"El producto ha sido creado"});
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-    
-});
+router.post("/",validateFields,ProductsController.createProduct);
 
-router.put("/:pid",validateFields,async(req,res)=>{
-    
-    
-    //Actualizar producto
-    
-})
+router.put("/:pid",validateFields,ProductsController.updateProduct)
 
-router.delete("/:pid",async(req,res)=>{
-    try {
-        const id = req.body
-        const productEliminated = await productService.delete(id)
-        res.json({status:"succes",message:"Producto eliminado"})
-        
-    } catch (error) {
-        res.json({status:"error", message:error.message})
-    }
-
-});
+router.delete("/:pid",ProductsController.deleteProduct);
 
 
 export { router as productsRouter} 

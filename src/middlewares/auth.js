@@ -13,3 +13,11 @@ export const showProductsView = (req,res,next)=>{
         next();
     }
 };
+
+export const showLoginView = (req,res,next)=>{
+    if(req.session?.userInfo){
+        res.redirect("/perfil");
+    }else{
+        next();
+    }
+};

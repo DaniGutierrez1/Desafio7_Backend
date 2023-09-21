@@ -3,55 +3,30 @@ import { Router } from "express";
 import { CartManager } from "../dao/cartManager.js";
 import { ProductManager } from "../dao/productManager.js";
 */
-import { CartMongo } from "../dao/managers/mongo/cartMongo";
+import { CartMongo } from "../dao/managers/mongo/cartMongo.js";
+import { productsDao, cartService } from "../constants/index.js";
 
-const cartService = new CartMongo()
-//const productService = new ProductManager("products.json")
+import { CartController } from "../controllers/carts.controller.js";
+
+
+export const cartService = new CartMongo()
+
 
 const router = Router();
 
-router.get("/carts",async(req,res)=>{
-    try {
-        const cartCreated = await cartService.get()
-        res.json({status:"succes",data:cartCreated})
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-});
+router.get("/carts",CartController.RenderCart);
 
 
-router.post("/carts",async(req,res)=>{
-    try {
-        const cartInfo=req.body;
-        const cartCreated=await cartService.save(cartInfo)
-        res.json({status:"succes",data:cartCreated})
-    } catch (error) {
-        res.json({status:"error",message:error.message});
-    }
-});
+router.post("/carts",CartController.createCart);
 
-router.get("/:cid",async(req,res)=>{ 
-    try {
-        const cartId = req.params.cid;
-        const cart = await cartService.getByID(cartId)
-        if(cartId){
-            res.json({status:"succes",data:cart, message:"El carrito ha sido encontrado"})
-        }else{
-            
-            res.json({status:"error", message:"El carrito no existe"})
-        }
-        
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-});
+router.get("/:cid",CartController.getCart);
 
 router.post("/:cid/product/:pid",async(req,res)=>{
     try {
         const cartID = req.params.cid;
         const productId = req.params.pid;
         const cart = await cartService.getById(cartId)
-        const product = await productService.getById(productId)
+        const product = await productsDao.getById(productId)
 
         /* const products = cart.products; */
         //verificar si el producto ya existe en el carrito
