@@ -1,7 +1,5 @@
 import { ProductsService } from "../services/product.service.js";
 
-import { productsDao } from "../routes/products.routes.js";
-
 export class ProductsController{
     static getProducts= async(req,res)=>{
         try {

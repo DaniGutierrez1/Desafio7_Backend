@@ -25,7 +25,7 @@ router.post("/:cid/product/:pid",async(req,res)=>{
     try {
         const cartID = req.params.cid;
         const productId = req.params.pid;
-        const cart = await cartService.getById(cartId)
+        const cart = await cartService.getById(cartID)
         const product = await productsDao.getById(productId)
 
         /* const products = cart.products; */
@@ -39,7 +39,7 @@ router.post("/:cid/product/:pid",async(req,res)=>{
             //     quantify:1
             // }
             // cartID.products.push(newProduct)
-        await cartService.update(cartId,cart)
+        await cartService.update(cartID,cart)
         res.json({status:"succes",data:cartCreated})
     } catch (error) {
         res.json({status:"error", message:error.message});

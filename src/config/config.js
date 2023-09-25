@@ -1,9 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 export const config ={
     server:{
-        port:8080,
-        secretSession:"arribaAbajo"
+        port:process.env.PORT,
+        secretSession:process.env.SECRET_SESSION
     },
     mongo:{
-        url:"mongodb+srv://Dani:DanyGutierrez913@cluster0.ovkmrpe.mongodb.net/ecommerce?retryWrites=true&w=majority"
+        url:process.env.MONGO_URL
     }
 } 
