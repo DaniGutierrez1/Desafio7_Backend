@@ -25,6 +25,10 @@ router.get("/registro",showLoginView,viewsController.renderSignup)
 
 router.get("/login",showLoginView,viewsController.renderLogin)
 
+router.get("/cambio-contraseña",(req,res)=>{
+    res.render("changePassword")
+});
+
 router.get("/perfil",checkUserAuthenticated,viewsController.renderProfile)
 
 /*

@@ -16,7 +16,7 @@ export class viewsController{
     };
 
     static renderProfile = (req,res)=>{
-        res.render("profile",{user:req.session.userInfo})
+        res.render("profile",{user:JSON.parse(JSON.stringify(req.user))});
     };
 
     static renderProduct = async (req,res)=>{

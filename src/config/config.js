@@ -8,5 +8,10 @@ export const config ={
     },
     mongo:{
         url:process.env.MONGO_URL
+    },
+    github:{
+        clientId:process.env.clientId,
+        clientSecret:process.env.clientSecret,
+        callbackUrl:process.env.callbackUrl,
     }
 } 
